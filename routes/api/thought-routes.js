@@ -59,7 +59,56 @@ router.put('/:id', function(req, res){
 })
 
 router.delete('/:id', function(req, res){
-    
+    Thought.findOneAndDelete({_id:req.params.id})
+    .then(dbThoughtData => {
+        if(!dbThoughtData){
+            res.status(404).json({message: 'No Thought with this id'});
+            return;
+        }
+        res.json(dbThoughtData);
+    })
+    .catch(err => {
+        console.log(err);
+        res.json(err);
+    })
+});
+
+
+router.post('/:thoughtId/reactions', function(req,res){
+    Thought.findOneAndUpdate(
+        {_id: req.params.thoughtId},
+        {$push : {reactions : req.body}},
+        {new:true}
+    ).then(dbThoughtData => {
+        if(!dbThoughtData){
+            res.status(404).json({message:'No thought with this id'});
+            returnl;
+        }
+        res.json(dbThoughtData);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status(500).json(err);
+    })
+});
+
+
+router.delete('/:thoughtId/reactions/:reactionId', function(req, res){
+    Thought.findOneAndUpdate(
+        {_id: req.params.thoughtId},
+        {$pull: {reactions : {_id : req.params.reactionId}}},
+        {new:true}
+    )
+    .then(dbThoughtData => {
+        if(!dbThoughtData){
+            res.status(404).json({message: 'No Thought with this id'});
+        }
+        res.json(dbThoughtData);
+    })
+    .catch(err => {
+        console.log(err);
+        res.status
+    })
 })
 
 module.exports = router;
