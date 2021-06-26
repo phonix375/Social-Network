@@ -5,7 +5,18 @@ const  { Thought } = require('../../moduls')
 router.get('/', function(req, res){
     Thought.find({})
     .then(result => {
-        res.status(200).json(result.json)
+        res.status(200).json(result)
+    })
+    .catch(err=>{
+        res.status(500).json(err);
+    });
+    
+});
+
+router.get('/', function(req, res){
+    Thought.find({})
+    .then(result => {
+        res.status(200).json(result)
     })
     .catch(err=>{
         res.status(500).json(err);
