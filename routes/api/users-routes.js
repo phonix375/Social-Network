@@ -3,9 +3,10 @@ const { User } = require('../../moduls')
 
 //get all users
 router.get('/', function (req, res) {
-    User.find({})
-        .then(dbPizzaData => res.json(dbPizzaData))
+    User.find({}).populate({path:'friends'}).populate({path:'thoughts'})
+        .then(dbUserData => res.json(dbUserData))
         .catch(err => {
+            console.log(err);
             res.status(500).json(err);
         });
 });
