@@ -41,4 +41,25 @@ router.get('/:id', function ({ params }, res) {
 });
 
 
+router.put('/:id', function(req, res){
+    Thought.findOneAndUpdate(
+        {_id:req.params.id},
+        req.body,
+        {new:true}
+    ).then(dbThoughtData => {
+        if(!dbThoughtData){
+            res.status(404).json({message: 'Thought with this id wasnt found'})
+        }
+        res.json(dbThoughtData);
+    })
+    .catch(err => {
+        consoel.log(err);
+        res.json(err);
+    })
+})
+
+router.delete('/:id', function(req, res){
+    
+})
+
 module.exports = router;
